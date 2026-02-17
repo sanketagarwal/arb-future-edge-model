@@ -117,10 +117,13 @@ Run date: `2026-02-17`
    - Maintain buy-now vs wait labels, uplift targets, and censoring rules.
 2. **Taxonomy + features**
    - Improve category/entity enrichment and leakage-safe feature contracts.
+   - Add explicit liquidity/capacity feature families (depth, refill velocity, slippage sensitivity).
 3. **Modeling workbench**
    - Keep training/evaluation plug-and-play for different algorithm choices.
+   - Train dedicated liquidity/capacity prediction targets, not just edge-direction targets.
 4. **Calibration + decision policy**
    - Tune thresholds and decision logic with validation-first policy controls.
+   - Combine edge forecast + capacity forecast into one buy-now/wait + sizing decision.
 
 ## TODO Later (deferred 5-8)
 
