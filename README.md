@@ -1,10 +1,16 @@
 # Arb Future Edge Model
 
-Minimal modeling workspace for:
+This project answers one simple question:
 
-- extracting IDENTICAL-like cross-venue opportunities from Replay Lab
-- generating supervised labels from execution outcomes
-- running a first baseline evaluation before any live policy changes
+`Should we buy this cross-venue arb now, or wait for a better entry?`
+
+It uses recent Replay Lab data to:
+
+- build labels that compare **buy-now vs wait**
+- train predictive models on those labels
+- backtest whether decisions would have helped PnL
+
+This repo is model-only. It does not place live orders.
 
 ## Setup
 
@@ -51,11 +57,11 @@ pnpm backtest:walkforward
 - `data/model_robust_backtest_report.json`: validation-tuned robust backtest on test split
 - `data/walkforward_backtest_report.json`: rolling walk-forward backtest window-by-window
 
-## Latest Live Refresh + Backtest Snapshot
+## Latest Run Results
 
 Run date: `2026-02-17`
 
-### 1) Live opportunity refresh (Artemis run once)
+### 1) Live refresh (Artemis run once)
 
 - Artemis backend was started locally and `/api/scan/category` was triggered once with:
   - `keywords=bitcoin`
@@ -97,7 +103,7 @@ Run date: `2026-02-17`
   - mean total relative PnL per window: `+1543.13`
   - median total relative PnL per window: `+1908.84`
 
-### 5) "T-7d, T-24h, T-6h" phase accuracy for resolved-style labels
+### 5) Phase coverage note (`T-7`, `T-3`, `T-24h`, `T-6h`)
 
 - Current label coverage is concentrated in `T_7d_3d` only.
 - `T_3d_1d`, `T_24h_6h`, `T_6h_1h`, and `T_1h_close` currently have `0` rows in this sample.
@@ -105,10 +111,20 @@ Run date: `2026-02-17`
   - We can evaluate meaningful predictive performance for early phase (`T-7d..T-3d`).
   - We cannot yet claim accuracy for late phases (`T-24h`, `T-6h`, `T-1h`) from this dataset slice.
 
-### 6) What accuracy depends on most right now
+## Current Workstreams (1-4 active)
 
-- **Market domain shift** is material:
-  - `sports` and some `other` slices show stronger classification behavior.
-  - `politics` is weaker and drives generalization instability.
-- **Phase coverage** is the main blocker for late-resolution claims.
-- **Liquidity/capacity noise** and sparse high-quality late snapshots dominate regression error.
+1. **Labeling framework**
+   - Maintain buy-now vs wait labels, uplift targets, and censoring rules.
+2. **Taxonomy + features**
+   - Improve category/entity enrichment and leakage-safe feature contracts.
+3. **Modeling workbench**
+   - Keep training/evaluation plug-and-play for different algorithm choices.
+4. **Calibration + decision policy**
+   - Tune thresholds and decision logic with validation-first policy controls.
+
+## TODO Later (deferred 5-8)
+
+5. Serving / hotbox ranking service  
+6. Execution integration contract  
+7. Backtesting + resolved-market analytics hardening  
+8. MLOps, monitoring, and documentation hardening
