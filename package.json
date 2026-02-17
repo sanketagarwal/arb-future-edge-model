@@ -1,0 +1,21 @@
+{
+  "name": "arb-future-edge-model",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check:api": "node scripts/check-replay-api.mjs",
+    "extract:dataset": "node scripts/extract-training-dataset.mjs",
+    "labels:generate": "node scripts/generate-capacity-labels.mjs",
+    "baseline:eval": "node scripts/run-baseline-eval.mjs",
+    "train:baseline": "node scripts/train-baseline-models.mjs",
+    "backtest:baseline": "node scripts/backtest-baseline-models.mjs",
+    "train:robust": "node scripts/train-robust-models.mjs",
+    "backtest:robust": "node scripts/backtest-robust-models.mjs",
+    "backtest:walkforward": "node scripts/backtest-walkforward-robust.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "pg": "^8.16.3"
+  }
+}
